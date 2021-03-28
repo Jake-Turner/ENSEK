@@ -1,0 +1,130 @@
+### Mission
+To model the remaining areas of the site, including the selling and account functions.
+
+### Notes
+
+After jotting down some test ideas for the buying functionality, I return to the home page and navigate to the "Sell some energy" page.
+I'm first struck by the lack of charisma in the home page.
+I'll revisit this, as it's possible this is an early prototype and it's had no input from a UI/UX expert.
+
+I click the "Sell energy" button, and I am met with an image that suggests the area is under maintenance.
+At this point, I'd contact the developers to enquire on the nature of this maintenance.
+
+I return to the home page and click "Learn more".
+This takes me to a page describing ENSEK Energy Corp.
+
+I read this text, and click the "Find out more about us" button.
+This redirects me to https://ensek.com/about.
+Navigating back in the browser reinforces my feeling that this site is inconsistent with the image that ENSEK wishes to portray, and inconsistent with the other products in the ENSEK ecosystem.
+
+I copy this text, and paste it into a spell checker, as I know that right now I'm fairly tired and prone to reading errors.
+
+The spell checking tool found no errors, except the double full stop in the title of the page.
+
+Checking this text has prompted me to think about translation. ENSEK's expansion into Western Europe and Australia mean that this product may benefit from language and currency settings.
+
+I realise I haven't added these thoughts to my test plan, so take 5 minutes to do so.
+
+In doing so, I start to think about why there is even a new description of ENSEK, when there is already an existing page that presents the information in a better, more charismatic way.
+This creates two sources of truth, and doubles the work needed to update company information.
+There is also an increased testing burden, as the claims made in this page will have to be checked against the claims made in the linked site.
+
+I remember seeing more 'About Us' functionality, so I check to see if there is consistency amongst these functions.
+The navigation bar "About" button directs me to the same endpoint: /Home/About.
+The "Find out more" button on the main page directs me to the https://ensek.com home page.
+This further raises a question about why we have another 'About Us' page.
+As there is nothing technically wrong with having this 'About Us' page, I am instead raising this as an issue.
+As I re-read over the description, I spot that the text is outdated.
+"Nearly 10 years later" puts the date of creation of this text at a maximum on 2019. This leads me to believe the other claims, like the 140 strong team and 25 energy suppliers, are also outdated.
+I check these figures on the linked page, and see there are 30 energy suppliers.
+This is now a bug, so I raise it.
+
+I return to checking the remaining functionality of the site.
+I click the "Contact" button in the header.
+I am met with an error image.
+There is a spelling error in the sign, which I think is meant to be humorous.
+This immediately seems like a critical bug to me.
+We're operating an e-store that supplies critical resources to a variety of customers. If I was a business user experiencing an issue with my energy acquisition, I expect to be able to resolve that issue as soon as possible.
+The only point of contact on this site being broken represents a severe risk that our customers will lose money and trust in our business.
+In the event of an error, I expect to see a business handle it gracefully, meaning acknowledging this error, apologising for inconvenience, and details on how to contact someone who can help.
+I make a note that it is likely that the lack of care put into handling these errors is cause for concern when it comes to the care put into other functions.
+
+The only remaining function to model is account creation and access.
+Before I do that, I take a small break to bring my test plan up to date.
+
+I begin exploring the account functions.
+I click "Register".
+I notice that my password manager detects the password fields.
+I try to register an account for "jake.turner94+ensek@gmail.com".
+There is a very long wait for the next page to load.
+I make a note to observe this with a package sniffer or the dev tools.
+After a significant delay, I notice that my password manager prompt to remember the account is still visible, so I confirm that I wish to save the details.
+This immediately returns a chrome error page for an ERR_EMPTY_RESPONSE code.
+I refresh the page and confirm the form resubmission.
+There is still a very long waiting period.
+After the substantial wait, I am presented with a SQL Server connection error.
+I copy this error text into my resources folder, under "Register Account Error.txt".
+I notice that there are no new line characters in the stack trace, so I format it using https://elmah.io/tools/stack-trace-formatter/.
+I take a quick look through the stack trace, but see that there isn't much information I can gather and I am better off contacting a developer to investigate.
+I try registering a different account; "test@test.com" with "test" as a password.
+This triggers the validation rules, my password must have at least 6 characters.
+I wonder what other rules exist, so I try invalid email addresses.
+I start with "test", which triggers two rules; the previous password error and a new email format error.
+I quickly note there are inconsistencies in the spelling of "e-mail".
+I add a '@' symbol to the email address, which returns the previous two errors again.
+I try expanding my password to 'testtest'.
+This returns a single email format error.
+I change the email to 'test@test'.
+I am surprised to see the password fields have now cleared, and I am presented with a single new error:
+"Passwords must have at least one non letter or digit character. Passwords must have at least one digit ('0'-'9'). Passwords must have at least one uppercase ('A'-'Z')."
+
+This behaviour is inconsistent with previously observed behaviour, where the passwords were not cleared if they failed the minimum length requirement.
+I am also curious as to whether "test@test" matches the RFC 5322 Official Standard email regex pattern.
+The pattern is:
+
+	(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])
+
+This does not match "test@test", so we can conclude there is a risk that customers will be able to register with invalid email addresses, possibly by user error, and they would not be stopped.
+
+I try again to register with valid data, but arrive once again at the SQL server error.
+I take some time to raise the bug, and also raise an issue with the password requirements being obscure and creating passwords hard to remember, and that we don't check this password against a database of known breached passwords.
+
+With such a fundamental SQL Server error, I suspect the registration services are also affected.
+I verify this, with an attempt to log into any account passing the text entry validation returning the same error.
+I could still perform tests to understand the validation on the Login fields, but I am yet to test the bulk of they Buy Energy functionality, and I decide my remaining time is better spent there.
+
+### Bugs
+
+#BUG 1
+The claims made by the About Us page are outdated. They are inconsistent with the known facts, erode our positive image, and could give customers of the energy store the idea that we aren't keeping our product up to date.
+
+#BUG 2
+The Contact page is presenting an error.
+This presents a huge risk that customers will be unable to resolve any problems that arise during their stay on the site, potentially causing financial damage to their businesses.
+This reflects negatively on ENSEK, and it is inconsistent with our image, and other comparable e-stores that offer minimal customer service waiting times.
+
+#BUG 3
+SQL Server Connection is incorrectly configured.
+Registering a valid account leads to a SQL Server Connection Error.
+Error text and and a stack trace can be found in "resources/Register Account Error.txt".
+Whilst this appears critical, I've yet to deduce what function the accounts even offer, so I cannot yet conclude they are business critical.
+Logging into accounts presents the same error.
+
+#BUG 4
+We present an unformatted error message and stack trace upon any error.
+This is inconsistent with comparable products, where errors are caught and handled, presenting the end user with a readable error message apologising and expressing our surprise.
+Presenting raw stack traces is a security risk, as it can reveal information used by bad actors trying to exploit the systems vulnerabilities.
+
+### Issues
+
+#ISSUE 1
+There is a needless 'About Us' page.
+This creates two sources of truth, and a technical burden when the company updates it's information.
+
+#ISSUE 2
+Password validation rules are complex, and do not allow secure but easy to remember passwords.
+It's recommended by NIST that all passwords be checked against known breached passwords.
+This is easy and free to implement, so there is no good reason not to.
+
+#ISSUE 3
+Testability concerns on this build. The Sell function and account functions are untestable.

@@ -1,0 +1,71 @@
+2021-03-28 00:10:32,594 INFO o.a.j.u.JMeterUtils: Setting Locale to en_EN
+2021-03-28 00:10:32,603 INFO o.a.j.JMeter: Loading user properties from: C:\Users\Zoe\Desktop\Ensek Testing\jmx\apache-jmeter-5.4.1\bin\user.properties
+2021-03-28 00:10:32,604 INFO o.a.j.JMeter: Loading system properties from: C:\Users\Zoe\Desktop\Ensek Testing\jmx\apache-jmeter-5.4.1\bin\system.properties
+2021-03-28 00:10:32,604 INFO o.a.j.JMeter: Setting JMeter property: configPath=C:\Users\Zoe\Desktop\Ensek Testing\jmx\\config\accounts.config
+2021-03-28 00:10:32,610 INFO o.a.j.JMeter: Copyright (c) 1998-2021 The Apache Software Foundation
+2021-03-28 00:10:32,610 INFO o.a.j.JMeter: Version 5.4.1
+2021-03-28 00:10:32,610 INFO o.a.j.JMeter: java.version=1.8.0_281
+2021-03-28 00:10:32,611 INFO o.a.j.JMeter: java.vm.name=Java HotSpot(TM) 64-Bit Server VM
+2021-03-28 00:10:32,611 INFO o.a.j.JMeter: os.name=Windows 10
+2021-03-28 00:10:32,611 INFO o.a.j.JMeter: os.arch=amd64
+2021-03-28 00:10:32,611 INFO o.a.j.JMeter: os.version=10.0
+2021-03-28 00:10:32,611 INFO o.a.j.JMeter: file.encoding=Cp1252
+2021-03-28 00:10:32,611 INFO o.a.j.JMeter: java.awt.headless=null
+2021-03-28 00:10:32,611 INFO o.a.j.JMeter: Max memory     =1073741824
+2021-03-28 00:10:32,611 INFO o.a.j.JMeter: Available Processors =6
+2021-03-28 00:10:32,614 INFO o.a.j.JMeter: Default Locale=English (EN)
+2021-03-28 00:10:32,614 INFO o.a.j.JMeter: JMeter  Locale=English (EN)
+2021-03-28 00:10:32,615 INFO o.a.j.JMeter: JMeterHome=C:\Users\Zoe\Desktop\Ensek Testing\jmx\apache-jmeter-5.4.1
+2021-03-28 00:10:32,615 INFO o.a.j.JMeter: user.dir  =C:\Users\Zoe\Desktop\Ensek Testing\jmx
+2021-03-28 00:10:32,615 INFO o.a.j.JMeter: PWD       =C:\Users\Zoe\Desktop\Ensek Testing\jmx
+2021-03-28 00:10:32,616 INFO o.a.j.JMeter: IP: 10.5.0.2 Name: DESKTOP-7G7N9OS FullName: DESKTOP-7G7N9OS
+2021-03-28 00:10:32,681 INFO o.a.j.JMeter: Setting LAF to: com.github.weisj.darklaf.DarkLaf:com.github.weisj.darklaf.theme.DarculaTheme
+2021-03-28 00:10:33,082 INFO o.a.j.JMeter: Loaded icon properties from org/apache/jmeter/images/icon.properties
+2021-03-28 00:10:34,125 INFO o.a.j.JMeter: Loading file: Create Accounts.jmx
+2021-03-28 00:10:34,126 INFO o.a.j.s.FileServer: Default base='C:\Users\Zoe\Desktop\Ensek Testing\jmx'
+2021-03-28 00:10:34,127 INFO o.a.j.s.FileServer: Set new base='C:\Users\Zoe\Desktop\Ensek Testing\jmx'
+2021-03-28 00:10:34,245 INFO o.a.j.s.SaveService: Testplan (JMX) version: 2.2. Testlog (JTL) version: 2.2
+2021-03-28 00:10:34,258 INFO o.a.j.s.SaveService: Using SaveService properties file encoding UTF-8
+2021-03-28 00:10:34,259 INFO o.a.j.s.SaveService: Using SaveService properties version 5.0
+2021-03-28 00:10:34,261 INFO o.a.j.s.SaveService: Loading file: Create Accounts.jmx
+2021-03-28 00:10:34,278 INFO o.a.j.p.h.c.CookieManager: Settings: Delete null: true Check: true Allow variable: true Save: false Prefix: COOKIE_
+2021-03-28 00:10:34,288 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/html is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2021-03-28 00:10:34,289 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xhtml+xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2021-03-28 00:10:34,289 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2021-03-28 00:10:34,289 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2021-03-28 00:10:34,289 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/vnd.wap.wml is org.apache.jmeter.protocol.http.parser.RegexpHTMLParser
+2021-03-28 00:10:34,289 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/css is org.apache.jmeter.protocol.http.parser.CssParser
+2021-03-28 00:10:34,310 INFO o.a.j.s.FileServer: Set new base='C:\Users\Zoe\Desktop\Ensek Testing\jmx'
+2021-03-28 00:10:34,658 INFO o.a.j.s.SampleResult: Note: Sample TimeStamps are START times
+2021-03-28 00:10:34,658 INFO o.a.j.s.SampleResult: sampleresult.default.encoding is set to ISO-8859-1
+2021-03-28 00:10:34,658 INFO o.a.j.s.SampleResult: sampleresult.useNanoTime=true
+2021-03-28 00:10:34,659 INFO o.a.j.s.SampleResult: sampleresult.nanoThreadSleep=5000
+2021-03-28 00:10:37,038 INFO o.a.j.e.StandardJMeterEngine: Running the test!
+2021-03-28 00:10:37,038 INFO o.a.j.s.SampleEvent: List of sample_variables: []
+2021-03-28 00:10:37,038 INFO o.a.j.s.SampleEvent: List of sample_variables: []
+2021-03-28 00:10:37,039 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must contain the string: '.functions.'
+2021-03-28 00:10:37,041 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must not contain the string: '.gui.'
+2021-03-28 00:10:37,260 INFO o.a.j.g.u.JMeterMenuBar: setRunning(true, *local*)
+2021-03-28 00:10:37,359 INFO o.a.j.e.StandardJMeterEngine: Starting ThreadGroup: 1 : Thread Group
+2021-03-28 00:10:37,359 INFO o.a.j.e.StandardJMeterEngine: Starting 1 threads for group Thread Group.
+2021-03-28 00:10:37,360 INFO o.a.j.e.StandardJMeterEngine: Thread will continue on error
+2021-03-28 00:10:37,360 INFO o.a.j.t.ThreadGroup: Starting thread group... number=1 threads=1 ramp-up=1 delayedStart=false
+2021-03-28 00:10:37,363 INFO o.a.j.t.ThreadGroup: Started thread group number 1
+2021-03-28 00:10:37,363 INFO o.a.j.e.StandardJMeterEngine: All thread groups have been started
+2021-03-28 00:10:37,367 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-1
+2021-03-28 00:10:38,037 INFO o.a.j.p.h.s.HTTPHCAbstractImpl: Local host = DESKTOP-7G7N9OS
+2021-03-28 00:10:38,042 INFO o.a.j.p.h.s.HTTPHC4Impl: HTTP request retry count = 0
+2021-03-28 00:10:38,159 INFO o.a.j.p.h.s.h.LazyLayeredConnectionSocketFactory: Setting up HTTPS TrustAll Socket Factory
+2021-03-28 00:10:38,162 INFO o.a.j.u.JsseSSLManager: Using default SSL protocol: TLS
+2021-03-28 00:10:38,162 INFO o.a.j.u.JsseSSLManager: SSL session context: per-thread
+2021-03-28 00:10:38,418 INFO o.a.j.u.SSLManager: JmeterKeyStore Location:  type JKS
+2021-03-28 00:10:38,418 INFO o.a.j.u.SSLManager: KeyStore created OK
+2021-03-28 00:10:38,418 WARN o.a.j.u.SSLManager: Keystore file not found, loading empty keystore
+2021-03-28 00:10:39,143 INFO o.a.j.m.J.JSR223 PreProcessor: Registering New Account test@test (Password: @Test12345)
+2021-03-28 00:10:39,293 ERROR o.a.j.e.J.JSR223 PostProcessor: Account test@test Was Not Created: Internal Server Error
+2021-03-28 00:10:39,417 INFO o.a.j.m.J.JSR223 PreProcessor: Registering New Account test@test.com (Password: test)
+2021-03-28 00:10:39,549 ERROR o.a.j.e.J.JSR223 PostProcessor: Account test@test.com Was Not Created: Internal Server Error
+2021-03-28 00:10:39,550 INFO o.a.j.t.JMeterThread: Thread is done: Thread Group 1-1
+2021-03-28 00:10:39,550 INFO o.a.j.t.JMeterThread: Thread finished: Thread Group 1-1
+2021-03-28 00:10:39,555 INFO o.a.j.e.StandardJMeterEngine: Notifying test listeners of end of test
+2021-03-28 00:10:39,555 INFO o.a.j.g.u.JMeterMenuBar: setRunning(false, *local*)

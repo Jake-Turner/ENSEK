@@ -1,0 +1,75 @@
+### Mission
+
+To explore the product, form a model and develop a test plan.
+
+### Notes
+
+I start by reading the briefing slides. A copy of these can be found in the project directory named 'resources'.
+
+I see that the mission here is to test a 'test system', within 48 hours, and within a reasonable length of time.
+
+There is no context behind the test system, it's intended users, it's intended function, or the problems it is trying to solve.
+
+With that in mind, I start trying to reveal the context of the project by identifying people who matter, system experts, or any other oracles I can find.
+
+I've sent an email requesting someone to talk to, but I've received no reply.
+I look up Jess Wright, who's email is provided in the slides. She is an office administrator and is unlikely to be a system expert.
+I'd fall back on contacting Lee Wilson directly, but it's beginning to look like candidates are not meant to be concerned with the context of the project.
+With this in mind, I will focus my time on exploring what I can and developing my understanding of the product, and present my questions to reveal context in the debrief.
+
+Back to the slides, I find that I'm being directed to conduct certain activities in a certain order; formation of a test plan, execution of a test plan, and test automation.
+I disagree with this course of action, so as a responsible tester I will instead approach this task by considering these activities a part of a larger task: testing the system.
+As a context driven tester, I develop my test plan continuously as my understanding of the product and the project environment evolve, and any tool I develop will be in service of the testing.
+It is impossible to automate testing, so I will assess the need for tools as I would with any real project.
+The task also assumes that the UI is the domain I'd target using tools. This is very unlikely, but I'll be sure to put extra effort into explaining my choices within the context of this project.
+
+Now that I've finished testing the slides, I will start exploring the software and developing the test plan.
+I'll be making a mind map to model my understanding of the web app, which will act as my test plan. This can be found in the resources subdirectory.
+
+I will conduct my testing in a series of loose sessions, which will aid our discussion of my testing.
+
+### Exploring the Product
+
+Before I start, I review the FEW HICCUPPS heuristics in my mind to prime my brain for identifying problems.
+
+When I first launch the site, I see that it appears to be an e-store for ENSEK Energy Corp.
+I see links to sections for buying and selling energy, learning more about ENSEK Energy Corp, registering and logging into accounts, and a way to contact the company.
+
+I start fleshing out the test plan with information I've learned about the company and purpose of this product.
+An interesting thought crosses my mind: should I test this product as an e-store or as a tool for assessing testers? These two contexts are very different, and would lead me to very different approaches.
+Assessing testers is arguably the more accurate context, but it's far easier to assess my testing if I treat this like an e-store, so I'll keep both contexts in mind.
+
+Next, I start my feature tour of the site.
+I start by trying to buy some energy.
+
+I am taken to a page which displays the time, the status of the trading window, an explanation of the function of a table, a reset button, and a table where I can select various energy types and units to buy.
+I notice that I am not required to log into an account yet.
+There is a div to the right of the table containing an advertisement of an offer for 30% off Gas, with an image describing a 20% saving.
+The div is misaligned too.
+This creates two inconsistent claims, causing confusion for the end user.
+I make a note to test both of these claims, and log a short statement on the bug which can be found in the section below.
+I also quickly note that the div's are misaligned, which I will log later. I capture a quick screenshot.
+
+When I refocus on the Buy Energy page, I notice that the time displayed has not changed. It appears to be a static reference to the time the user opened the page.
+As the site is claiming this is the current time, this is a bug.
+This raises the question as to whether the trading window status is also static. 
+I don't see any description of the trading windows, which is problematic for customers wishing to plan their futures.
+It seems likely that this status is also static, so a customer could potentially open the page before close of trading, return to the page some time later, and encounter issues trying to buy energy.
+I log these as future test ideas, and notice it has been nearly one hour since I began this session.
+I'll add to my test plan, then take a short break.
+
+### Bugs
+
+#BUG 1
+There are two inconsistent claims as to the discount on Gas, 20% or 30%.
+Screenshot: "Inconsistent Gas Discount.png"
+I am yet to test these two claims.
+
+#BUG 2
+Untidy alignment between div sections on the Buy Energy page.
+This is inconsistent with the image ENSEK Energy Corp. wishes to portray to its customers.
+Screenshot: "Misaligned Div's.png"
+
+#BUG 3
+The time displayed on the web page is the time the user first loads the page, not the current time.
+This is inconsistent with the claims made by the site, and inconsistent with similar products that display a live date.

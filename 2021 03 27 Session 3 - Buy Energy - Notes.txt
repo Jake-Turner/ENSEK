@@ -1,0 +1,165 @@
+### Mission
+To explore the purchasing functionality from the perspective of a customer wishing to fulfil their energy needs.
+
+### Notes
+
+I am testing under the persona of a customer with energy needs.
+This customer is a SMB that requires electricity and gas.
+
+I start by performing reasonable actions; buying a portion of the available electricity and gas.
+I fill out 100 units of each, but quickly find that I cannot buy both my items in one transaction.
+This is inconsistent with other e-commerce sites that allow a basket of items to be checked out.
+
+The second thing I notice is that there is no price indication for the cost of my transaction.
+I have to perform the calculation myself, which is not very customer friendly.
+
+The third thing I notice is the message returned to me:
+	"Thank you for your purchase of X units of Y We have popped it in the post and it will be with you shortly.
+	 There are now Z - X units of Gas left in our stores."
+	 
+I have replaced the values of units purchased, commodity, and original available amount with the variables X, Y and Z respectively.
+
+There are several issues with this:
+1) There is a grammatical mistake, with punctuation missing between sentences.
+2) I'm presented with this message even though I'm not a registered user, and I have never provided my address, thus it's impossible to actually ship me my commodity.
+3) Even with commodities that aren't shippable, like electricity, I'm told it'll be posted.
+4) Like point 2, I have never supplied payment information, thus my purchase of the item could not have been completed.
+
+These are issues in the context of a real e-commerce site.
+I do confirm that the remaining units of the commodities are correct after I complete both these transactions.
+
+Moving on from those issues, I start trying to understand the system.
+I wonder what the source of this data is. It is probably not a SQL Database, as we saw previously the user functionality returns SQL Server connection errors.
+It could stored locally client side.
+It could also be stored server side as a simpler object.
+
+To find the answer, I modify the quantities of available and try to access the data in a different browser with a new, unrelated user session.
+I open the Buy endpoint in a new instance of Edge, and find that the modified values reflect my previous purchase.
+This means it must be stored server side, and we're sending requests to modify that data.
+
+I plan to open Fiddler, and start sniffing the packets.
+Given the context of this exercise, I'm looking at assessing tooling possibilities.
+Although the exercise states Selenium as the preferred tool, I cannot justify that in this context, for the simplicity of the available actions combined with the nature of this product as a prototype, any automation targeting the UI layer will likely cost more to develop than it would be to check the UI functions manually.
+If I see the value in developing a tool, it will be to help me perform tests I could not do otherwise.
+
+At this point I tie up this thread to take care of my 16 week old son.
+When I return, I boot up Fiddler Everywhere.
+
+Whilst Fiddler is loading, I let my mind wonder onto some tests.
+1) What happens if I refresh the order confirmation page?
+2) What happens if I empty the store on one instance, then process an order in another?
+
+After Fiddler has loaded, I refresh the data, then buy one cubic meter of gas, then click "Buy More".
+From this, I see that a POST request to /Energy/Reset redirects to a GET request for /Energy/Buy, returning the HTML page.
+Purchasing an item is a POST request to /Energy/Buy, supplying the "energyType.EnergyTypeId" and "energyType.AmountPurchased" integers, as well as a "Buy=Buy" key value pair. I see the same thing with "Reset=Reset". 
+I would usually enquire with the developer about why this is required, and make a note to try changing this value.
+That POST request returns a redirect to /Energy/SaleConfirmed endpoint, which takes three parameters; amountBought, energyType and amountLeft. This is then rendered into the message previously noted.
+Interestingly, energyType is a string value.
+The "Buy More" button simply repeats the GET /Energy/Buy request.
+From this, I can conclude that refreshing the order confirmation page will probably just refresh the method that renders the message, not the buy request, but I still need to prove that.
+
+I repeat the actions until I have a list of the energy type id.
+Gas = 1
+Electricity = 3
+Oil = 4
+
+A reasonable hypothesis is that Nuclear = 2, so I try re-issuing the POST /Energy/Buy method with that value.
+		
+		Thank you for your purchase of 1 units of Nuclear
+
+        We have popped it in the post and it will be with you shortly.
+
+        There are now -1 units of Nuclear left in our stores.
+		
+Oh dear, it seems there is no check on stock levels at a service layer.
+From this, we can theorise that we would be able to complete an order on a separate instance after we empty the store in this one.
+
+To check my assumptions about this system, I perform these two tests now.
+Refreshing the order confirmation page does indeed resend the request to render the message, not the buy request.
+You can force negative inventory by completing an order after emptying the store in another instance.
+I have saved a screenshot of the negative values as "screenshots/Negative Amounts.png".
+
+I check if there are UI validations performed on the amounts ordered. There aren't, so you can force negative amounts there too.
+I submit a negative value, and the amount in stock increases.
+I submit character, and I am presented with an error: Input string was not in a correct format.
+I submit a decimal, the same error is thrown.
+I remove the value to send an empty string, and the same error is thrown.
+It seems there are very few checks performed on these form values, so I start throwing naughty strings at it.
+
+Entering 'null' throws the same StringToNumber error, which gives me reason to suspect this is the first method we pass our string to, so we'll be limited in the damage we can do.
+-1E2, Error
+--1, Error
+999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999, new error: Value was either too large or too small for an Int32.
+0x0, Error
+", Error
+<foo val=“bar” />, new error: A potentially dangerous Request.Form value was detected from the client (energyType.AmountPurchased="<foo val=“bar” />"). This is the standard .NET response to this.
+田中さんにあげて下さい. error
+<script>alert(123)</script>, dangerous string error
+1;DROP TABLE users, error, expected as I don't think this interaction involves SQL.
+
+From this, I've identified that it's not worth programmatically applying the big list of naughty strings to these inputs.
+
+I start modifying other values through Fiddler.
+I first modify the energyType.EnergyTypeId to 5. This doesn't error, and presents this message:
+
+		Thank you for your purchase of 0 units of 
+
+        We have popped it in the post and it will be with you shortly.
+
+        There are now 0 units of  left in our stores.
+
+Interesting. What if we modify this value in an extreme way?
+Very large numbers throw the same Int32 size related error.
+Negative numbers give blank spaces.
+String values give the same StringToNumber error.
+Changing or removing the "Buy=Buy" field does nothing.
+We can trigger "Value cannot be null" errors through removing the parameters.
+
+### BUGS
+
+#BUG 1
+As a customer with multiple energy needs, I cannot checkout more than one type of energy at a time.
+This is inconsistent with comparable e-commerce sites.
+
+#BUG 2
+No total price is shown to a customer who makes a purchase.
+They are given the price per unit, and must calculate the total cost themselves.
+This is inconvenient, slow, and is inconsistent with every other e-commerce site.
+
+#BUG 3
+Grammatical errors in the /Energy/SaleConfirmed message.
+There is punctuation missing between sentences.
+
+#BUG 4
+As a customer, I cannot receive my energy.
+I have no way of defining where the energy must be sent, thus cannot receive it.
+This invalidates the entire purpose of the site.
+
+#BUG 5
+ENSEK Energy Corp can never make money.
+There is no way of defining payment information.
+
+#BUG 6
+Customers are informed that non-postable energy units are going to be shipped to them.
+I may be very worried if I get a message telling me some nuclear energy is going to be popped through my letter box.
+
+#BUG 7
+No inventory checks are performed in the services, meaning I can make orders that the business cannot fulfil.
+This is inconsistent with the reliable image we wish to convey.
+To reproduce the bug, request an amount higher than the current available inventory levels.
+
+#BUG 8
+Customers can add stock to our inventories.
+By requesting negative amounts of energy, a customer can increase our stock levels.
+This concept is not wrong, but the customer should have to go through the Sell endpoint.
+UI limitations on not allowing orders for empty stock should be reflected in the Service layer, as anyone can avoid UI validation.
+
+#BUG 9
+There is no validation on the energyType.EnergyTypeId or energyType.AmountPurchased parameters for the POST /Energy/Buy method in the UI.
+The string values are passed straight into integer converters, which throw numerous errors depending on the invalid input string.
+I am allowed to submit this request through the UI as we perform no validation on the text boxes.
+
+### ISSUES
+
+#ISSUE 1
+I'm not sure why we have parameters like "Buy=Buy", and I don't know who to ask.

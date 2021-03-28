@@ -1,0 +1,52 @@
+### Mission
+To demonstrate the creation of a tool aimed at enabling a tester to perform better testing.
+
+### Notes
+
+I am of the opinion that in its current state, a tester may benefit from at least two tools.
+The first tool is to assess the application under stress, testing to see the limits of our capabilities of serving customers, and how the system behaves under extreme circumstances.
+The second tool would potentially be useful in the future, if my questions reveal more context behind the user account functionality.
+At the moment, the user accounts don't work, and they aren't related to any accessible functionality, so they may be removed entirely.
+If I'm treating this like a real e-commerce site though, that is not going to happen, so it would be a good opportunity to demonstrate configurable test data creation.
+
+My plan is to create these two tools in the service layer using JMeter.
+I remind myself that I am going to use the stock version of JMeter, not my custom JakeMeter, so I need to be mindful of the improvements I won't have access to.
+
+First, I set up the test recorder to get a quick description of the service calls.
+I check them over to get an idea of the activities I'll have to perform.
+I notice that when creating accounts, a request verification token is used, accessible on the previous page quickly via regex matching.
+
+I stop the recorder, and tidy up the requests.
+
+I organise the test plan, dividing up the requests into features.
+
+I then start with planning the configurable account creator.
+I don't like using standard properties like most JMeter test plans encourage, as when the test plan becomes more complex and relationships between test objects are needed, properties are horrible.
+Therefore, I decide to demonstrate using a Groovy Config.
+I plan to define the accounts to be created as a list of maps with emails and passwords.
+This will mean we can easily programmatically create this config if the context demands that, such as if we want to apply the big list of naughty strings.
+
+I set the basic structure of the loop, and start creating the samplers.
+When developing tools I try to program in helpful errors, as they are often aimed at non-technical testers.
+Therefore, I choose to program some simple validation that will log errors in config definition and stop the test plan.
+
+I populate the rest of the test plan with code to pull the correct account from the config and set the request variables.
+
+To set the request token, I tap into the CookieManager object.
+
+I test incrementally, and fix bugs as I find them.
+
+I write a simple test config and batch file launcher, and test my solution.
+It works, but I will not spend as much time testing it as I would normally, because this tool will never be used.
+
+I move on to the stress test of the buying functionality.
+I know that this build of the software will let me trigger orders through the services regardless of stock levels.
+This simplifies the system, and I can just create a configurable spread of samplers we can control the timing of.
+I'm running out time, so I'll make this tool simple, under the context that I'll use it to perform some experiments through the JMeter UI.
+
+I use random number generators to buy a random amount of a random energy.
+The tool is then ready to begin experimenting with.
+First, I run one minute tests whilst increasing the number of concurrent threads.
+Starting with 10, and then moving up to 100, I couldn't see any errors on the results viewer.
+I then removed the random number configuration, and set it to the maximum integer value of 2147483647.
+Refreshing the browser store page, I saw a dance of energy being made available and unavailable as the value in stock fluctuated between extreme positives and extreme negatives.

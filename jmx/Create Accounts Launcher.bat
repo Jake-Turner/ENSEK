@@ -1,0 +1,1 @@
+apache-jmeter-5.4.1\bin\jmeter -t "Create Accounts.jmx" -JconfigPath="%~dp0\config\accounts.config"
